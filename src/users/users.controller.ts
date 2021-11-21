@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -13,22 +14,22 @@ export class UsersController {
   };
 
   @Get()
-  getAll() {
+  getAll(): Promise<Array<CreateUserDto>> {
     return this.usersService.getAllUsers();
   };
 
   @Get(':id')
-  getOne(@Param('id') id: string) {
+  getOne(@Param('id') id: string): Promise<CreateUserDto> {
     return this.usersService.getOneUser(+id);
   };
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: CreateUserDto) {
+  update(@Param('id') id: string, @Body() dto: CreateUserDto): Promise<CreateUserDto> {
     return this.usersService.updateUser(+id, dto);
   };
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: string): Promise<DeleteResult> {
     return this.usersService.deleteUser(+id);
   };
 };

@@ -1,36 +1,67 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersEntity } from './entities/users.entity';
 
 @Injectable()
 export class UsersService {
-  constructor (
+  constructor(
     @InjectRepository(UsersEntity)
     private usersRepository: Repository<UsersEntity>
   ) {};
+
+  private async getUserById(id: number): Promise<CreateUserDto> | undefined {
+    const user = await this.usersRepository.findOne({ id });
+    return user;
+  };
 
   async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
     const user = await this.usersRepository.save(dto);
     return user;
   };
 
-  getAllUsers(): string {
-    return  'Action for returns all users';
+  async getAllUsers(): Promise<Array<CreateUserDto>> {
+    const users = await this.usersRepository.find();
+    return users;
   };
 
-  getOneUser(id: number): string {
-    return `Action for return one user by id: ${id}`;
+  async getOneUser(id: number): Promise<CreateUserDto> {
+    const user = await this.getUserById(id);
+
+    if (user) {
+      return user;
+    }
+
+    throw new HttpException({ message: 'Такого пользователя не существует' }, HttpStatus.NOT_FOUND);
   };
 
-  updateUser(id: number, dto: UpdateUserDto): string {
-    return `Action for update user by id: ${id}`;
+  async updateUser(id: number, dto: CreateUserDto): Promise<CreateUserDto> {
+    const userExist = await this.getUserById(id);
+
+    if (userExist) {
+      const user = this.usersRepository.save({
+        id,
+        email: dto.email,
+        fullName: dto.fullName
+      });
+
+      return user;
+    }
+
+    throw new HttpException({ message: 'Такого пользователя не существует' }, HttpStatus.NOT_FOUND);
   };
 
-  deleteUser(id: number): string {
-    return `Action for delete user by id: ${id}`;
+  async deleteUser(id: number): Promise<DeleteResult> {
+    const userExist = await this.getUserById(id);
+
+    if (userExist) {
+      const user = await this.usersRepository.delete({ id });
+
+      return user;
+    }
+
+    throw new HttpException({ message: 'Такого пользователя не существует' }, HttpStatus.NOT_FOUND);
   };
 };
