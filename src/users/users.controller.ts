@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { DeleteResult } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -24,7 +25,7 @@ export class UsersController {
   };
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: CreateUserDto): Promise<CreateUserDto> {
+  update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<UpdateUserDto> {
     return this.usersService.updateUser(+id, dto);
   };
 

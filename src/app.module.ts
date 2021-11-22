@@ -3,9 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersModule } from './users/users.module';
-import { UsersEntity } from './users/entities/users.entity';
 import { PostModule } from './posts/post.module';
-import { PostsEntity } from './posts/entities/posts.entity';
+import { CommentsModule } from './comments/comments.module';
+import { UserEntity } from './users/entities/user.entity';
+import { PostEntity } from './posts/entities/post.entity';
+import { CommentEntity } from './comments/entities/comment.entity';
 
 @Module({
   imports: [
@@ -20,13 +22,14 @@ import { PostsEntity } from './posts/entities/posts.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [UsersEntity, PostsEntity],
+      entities: [UserEntity, PostEntity, CommentEntity],
       synchronize: true
     }),
     UsersModule,
-    PostModule
+    PostModule,
+    CommentsModule
   ],
   controllers: [],
-  providers: [],
+  providers: []
 })
 export class AppModule {};

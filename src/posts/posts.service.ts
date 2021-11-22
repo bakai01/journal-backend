@@ -4,13 +4,13 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { PostsEntity } from './entities/posts.entity';
+import { PostEntity } from './entities/post.entity';
 
 @Injectable()
 export class PostService {
   constructor(
-    @InjectRepository(PostsEntity)
-    private postsRepository: Repository<PostsEntity>
+    @InjectRepository(PostEntity)
+    private postsRepository: Repository<PostEntity>
   ) {};
 
   private async findById(id: number): Promise<CreatePostDto> | undefined {

@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { UsersEntity } from './entities/users.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(UsersEntity)
-    private usersRepository: Repository<UsersEntity>
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>
   ) {};
 
   private async getUserById(id: number): Promise<CreateUserDto> | undefined {
@@ -48,7 +49,7 @@ export class UsersService {
     throw new HttpException('Такого пользователя не существует', HttpStatus.NOT_FOUND);
   };
 
-  async updateUser(id: number, dto: CreateUserDto): Promise<CreateUserDto> {
+  async updateUser(id: number, dto: UpdateUserDto): Promise<UpdateUserDto> {
     const userExist = await this.getUserById(id);
 
     if (userExist) {
