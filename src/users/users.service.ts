@@ -45,7 +45,7 @@ export class UsersService {
       return user;
     }
 
-    throw new HttpException({ message: 'Такого пользователя не существует' }, HttpStatus.NOT_FOUND);
+    throw new HttpException('Такого пользователя не существует', HttpStatus.NOT_FOUND);
   };
 
   async updateUser(id: number, dto: CreateUserDto): Promise<CreateUserDto> {
@@ -61,7 +61,7 @@ export class UsersService {
       return user;
     }
 
-    throw new HttpException({ message: 'Такого пользователя не существует' }, HttpStatus.NOT_FOUND);
+    throw new HttpException('Такого пользователя не существует', HttpStatus.NOT_FOUND);
   };
 
   async deleteUser(id: number): Promise<DeleteResult> {
@@ -73,6 +73,6 @@ export class UsersService {
       return user;
     }
 
-    throw new HttpException({ message: 'Такого пользователя не существует' }, HttpStatus.NOT_FOUND);
+    throw new HttpException('Такого пользователя не существует', HttpStatus.NOT_FOUND);
   };
 };
