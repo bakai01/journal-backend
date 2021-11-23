@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
@@ -20,15 +20,19 @@ export class CommentsService {
   };
 
   async createComment(dto: CreateCommentDto): Promise<CommentEntity> {
-    const preparationComment: IComment = {
-      text: dto.text,
-      post: { id: dto.postId },
-      user: { id: 1 }
-    };
-
-    const comment = await this.commentRepository.save(preparationComment);
-
-    return comment;
+    try {
+      const preparationComment: IComment = {
+        text: dto.text,
+        post: { id: dto.postId },
+        user: { id: 1 }
+      };
+  
+      const comment = await this.commentRepository.save(preparationComment);
+  
+      return comment;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_GATEWAY);
+    }
   };
 
   async updateComment(id: number, dto: UpdateCommentDto): Promise<UpdateResult> {
@@ -57,5 +61,16 @@ export class CommentsService {
     }
 
     throw new NotFoundException('Такого комментария не существует');
+  };
+
+  async removeCommentsByPostId(postId: number): Promise<DeleteResult> {
+    const deletedComments = await this.commentRepository
+      .createQueryBuilder()
+      .delete()
+      .from('comments')
+      .where('postId = :id', { id: postId })
+      .execute();
+
+    return deletedComments;
   };
 };

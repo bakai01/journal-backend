@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
+import { CommentsService } from 'src/comments/comments.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostEntity } from './entities/post.entity';
@@ -10,7 +11,8 @@ import { PostEntity } from './entities/post.entity';
 export class PostService {
   constructor(
     @InjectRepository(PostEntity)
-    private postsRepository: Repository<PostEntity>
+    private postsRepository: Repository<PostEntity>,
+    private commentsRepo: CommentsService
   ) {};
 
   private async findById(id: number): Promise<CreatePostDto> | undefined {
@@ -53,6 +55,7 @@ export class PostService {
     const existPost = await this.findById(id);
 
     if (existPost) {
+      await this.commentsRepo.removeCommentsByPostId(id);
       const deletedPost = await this.postsRepository.delete(id);
       return deletedPost;
     }
