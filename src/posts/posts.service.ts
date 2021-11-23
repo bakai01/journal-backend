@@ -37,13 +37,21 @@ export class PostService {
   };
 
   async findOnePost(id: number): Promise<CreatePostDto> {
-    const existPost = this.findById(id);
+    const qb = await this.postsRepository
+      .createQueryBuilder('posts')
+      .where({id})
+      .update()
+      .set({
+        views: () => 'views + 1'
+      })
+      .execute();
 
-    if (existPost) {
-      return existPost;
+    if (!qb.affected) {
+      throw new NotFoundException('Такого поста не существует');
     }
 
-    throw new NotFoundException('Такого поста не существует');
+    const result = await this.findById(id);
+    return result;
   };
 
   async updatePost(id: number, dto: UpdatePostDto): Promise<UpdateResult> {
