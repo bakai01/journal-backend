@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 import { PostService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { CountPostsDto } from './dto/count-posts.dto';
+import { SearchPostDto } from './dto/search-post.dto';
 
 @Controller('posts')
 export class PostController {
@@ -19,14 +21,24 @@ export class PostController {
     return this.postService.findAllPosts();
   };
 
+  @Get('popular')
+  findAllPopular(): Promise<CountPostsDto> {
+    return this.postService.findAllPopularPosts();
+  };
+
+  @Get('search')
+  search(@Query() dto: SearchPostDto): Promise<CountPostsDto> {
+    return this.postService.searchPost(dto);
+  };
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<CreatePostDto> {
     return this.postService.findOnePost(+id);
   };
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto): Promise<UpdateResult> {
-    return this.postService.updatePost(+id, updatePostDto);
+  update(@Param('id') id: string, @Body() dto: UpdatePostDto): Promise<UpdateResult> {
+    return this.postService.updatePost(+id, dto);
   };
 
   @Delete(':id')

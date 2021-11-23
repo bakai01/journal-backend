@@ -24,7 +24,7 @@ export class CommentsService {
       const preparationComment: IComment = {
         text: dto.text,
         post: { id: dto.postId },
-        user: { id: 1 }
+        user: { id: 3 }
       };
   
       const comment = await this.commentRepository.save(preparationComment);

@@ -20,7 +20,7 @@ export class PostEntity {
   @Column({ nullable: true })
   tags?: string;
 
-  @Column()
+  @Column({ default: 0 })
   views: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
