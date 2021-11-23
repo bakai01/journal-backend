@@ -4,6 +4,7 @@ import { DeleteResult, Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUserDto } from './dto/get-user.dto';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
@@ -13,12 +14,12 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>
   ) {};
 
-  private async getUserById(id: number): Promise<CreateUserDto> | undefined {
+  private async getUserById(id: number): Promise<GetUserDto> | undefined {
     const user = await this.usersRepository.findOne({ id });
     return user;
   };
 
-  private async getUserByEmail(email: string): Promise<CreateUserDto> | undefined {
+  async getUserByEmail(email: string): Promise<GetUserDto> | undefined {
     const user = await this.usersRepository.findOne({ email });
     return user;
   };

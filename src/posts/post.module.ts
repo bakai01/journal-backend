@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
 import { PostService } from './posts.service';
 import { PostController } from './posts.controller';
@@ -9,7 +9,7 @@ import { CommentsModule } from 'src/comments/comments.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([PostEntity]),
-    forwardRef(() => CommentsModule)
+    CommentsModule
   ],
   controllers: [PostController],
   providers: [PostService]

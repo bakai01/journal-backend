@@ -8,6 +8,7 @@ import { CommentsModule } from './comments/comments.module';
 import { UserEntity } from './users/entities/user.entity';
 import { PostEntity } from './posts/entities/post.entity';
 import { CommentEntity } from './comments/entities/comment.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { CommentEntity } from './comments/entities/comment.entity';
     }),
     UsersModule,
     PostModule,
-    CommentsModule
+    CommentsModule,
+    AuthModule
   ],
   controllers: [],
   providers: []
