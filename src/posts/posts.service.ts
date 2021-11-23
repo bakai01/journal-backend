@@ -39,7 +39,7 @@ export class PostService {
   async findOnePost(id: number): Promise<CreatePostDto> {
     const qb = await this.postsRepository
       .createQueryBuilder('posts')
-      .where({id})
+      .where({ id })
       .update()
       .set({
         views: () => 'views + 1'

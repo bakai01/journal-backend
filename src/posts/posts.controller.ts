@@ -32,7 +32,7 @@ export class PostController {
   };
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<CreatePostDto> {
     return this.postService.findOnePost(+id);
   };
 
