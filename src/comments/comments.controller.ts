@@ -4,14 +4,14 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { CommentEntity } from './entities/comment.entity';
+import { CommentDto } from './dto/comment.dto';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Post()
-  create(@Body() dto: CreateCommentDto): Promise<CommentEntity> {
+  create(@Body() dto: CreateCommentDto): Promise<CommentDto> {
     return this.commentsService.createComment(dto);
   };
 

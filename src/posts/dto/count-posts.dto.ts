@@ -1,6 +1,6 @@
-import { PostEntity } from '../entities/post.entity';
+import { PostDto } from './post.dto';
 
 export class CountPostsDto {
-  readonly posts: PostEntity[];
+  readonly posts: PostDto[];
   readonly count: number;
 };

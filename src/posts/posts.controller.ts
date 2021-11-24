@@ -6,18 +6,19 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { CountPostsDto } from './dto/count-posts.dto';
 import { SearchPostDto } from './dto/search-post.dto';
+import { PostDto } from './dto/post.dto';
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {};
 
   @Post()
-  create(@Body() dto: CreatePostDto): Promise<CreatePostDto> {
+  create(@Body() dto: CreatePostDto): Promise<PostDto> {
     return this.postService.createPost(dto);
   };
 
   @Get()
-  findAll(): Promise<Array<CreatePostDto>> {
+  findAll(): Promise<Array<PostDto>> {
     return this.postService.findAllPosts();
   };
 
@@ -32,7 +33,7 @@ export class PostController {
   };
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<CreatePostDto> {
+  findOne(@Param('id') id: string): Promise<PostDto> {
     return this.postService.findOnePost(+id);
   };
 

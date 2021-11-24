@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { CommentDto } from './dto/comment.dto';
 
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -14,12 +15,12 @@ export class CommentsService {
     private commentRepository: Repository<CommentEntity>
   ) {};
 
-  private async getById(id: number): Promise<CommentEntity> {
+  private async getById(id: number): Promise<CommentDto> {
     const comment = await this.commentRepository.findOne(id);
     return comment;
   };
 
-  async createComment(dto: CreateCommentDto): Promise<CommentEntity> {
+  async createComment(dto: CreateCommentDto): Promise<CommentDto> {
     try {
       const preparationComment: IComment = {
         text: dto.text,

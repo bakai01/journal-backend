@@ -8,6 +8,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { CountPostsDto } from './dto/count-posts.dto';
 import { SearchPostDto } from './dto/search-post.dto';
+import { PostDto } from './dto/post.dto';
 
 @Injectable()
 export class PostService {
@@ -17,17 +18,17 @@ export class PostService {
     private commentsRepo: CommentsService
   ) {};
 
-  private async findById(id: number): Promise<CreatePostDto> | undefined {
+  private async findById(id: number): Promise<PostDto> | undefined {
     const post = await this.postsRepository.findOne(id);
     return post;
   };
 
-  async createPost(dto: CreatePostDto): Promise<CreatePostDto> {
+  async createPost(dto: CreatePostDto): Promise<PostDto> {
     const post = await this.postsRepository.save(dto);
     return post
   };
 
-  async findAllPosts(): Promise<Array<CreatePostDto>> {
+  async findAllPosts(): Promise<Array<PostDto>> {
     const posts = await this.postsRepository.find({
       order: {
         createdAt: 'DESC'
@@ -36,7 +37,7 @@ export class PostService {
     return posts;
   };
 
-  async findOnePost(id: number): Promise<CreatePostDto> {
+  async findOnePost(id: number): Promise<PostDto> {
     const qb = await this.postsRepository
       .createQueryBuilder('posts')
       .where({ id })
